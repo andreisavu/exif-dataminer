@@ -25,11 +25,12 @@ def main():
         print 'Usage: ./flickr_fetch.py <options> or --help for info'
 
     if results is not None:
-        show_photos(results)
+        show_photos(f, results)
 
-def show_photos(results):
+def show_photos(f, results):
     for id, title in results:
         print id, ': ', title
+        print f.get_photo_urls(id)['Medium']
 
 def parse_args():
     """ Parce command-line arguments """
