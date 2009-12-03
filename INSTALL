@@ -1,8 +1,13 @@
 
+Install mongodb and start it:
+
+    http://www.mongodb.org/display/DOCS/Home
+    http://www.mongodb.org/display/DOCS/Downloads
+
 Install Python requirements:
 
     $ sudo easy_install yql web.py pymongo mongokit
-    
+
 Install mongolog package:
 
     This package allows easy centralized logging.
@@ -12,7 +17,7 @@ Install mongolog package:
     $ cd mongodb-log
     $ sudo python setup.py install
 
-Setup a collection for logging flickr related log messages:
+Setup capped collections for logging:
 
     $ ./mongo
     > use logging
