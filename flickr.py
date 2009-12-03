@@ -11,15 +11,38 @@ class Flickr(object):
     def __init__(self):
         self.yql = yql.Public()
 
-    def interesting_pictures(self, num=5):
-        """ Fetch most interesting pictures from flickr
+    def interesting_photos(self, num=5):
+        """ Fetch most interesting photos from flickr
 
         Params: num - result size
         Yields tuples (id, title)
         """
         query = 'select id, title from flickr.photos.interestingness(%s)' % num
         results = self.yql.execute(query)
+        return self._fetch_results(results, num)
+
+    def recent_photos(self, num=5):
+        """ Fetch recent pictures 
+
+        Params: num - result size
+        Yields tuples (id, title) 
+        """
+        query = 'select id, title from flickr.photos.recent(%s)' % num
+        results = self.yql.execute(query)
+        return self._fetch_results(results, num)
+
+    def search_photos(self, search, num=5):
+        """ Search photos on flickr
         
+        Params: search string and num of results
+        Yields tutples (id, title)
+        """
+        query = 'select id, title from flickr.photos.search(%s) where text=@text' % num
+        results = self.yql.execute(query, {'text' : search})
+        return self._fetch_results(results, num)
+
+    def _fetch_results(self, results, num):
+        """ Fetch results from a generic query result """
         rows = results.rows
         if num == 1: rows = [results.rows]
         

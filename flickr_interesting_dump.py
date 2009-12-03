@@ -5,7 +5,7 @@ from itertools import izip, count
 
 f = flickr.Flickr()
 
-for id, title in f.interesting_pictures(3):
+for id, title in f.interesting_photos(3):
     print 'ID:', id
     print 'Title:', title
     print 'Medium URL:', f.get_photo_urls(id)['Medium']
