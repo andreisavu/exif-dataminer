@@ -19,7 +19,11 @@ class Flickr(object):
         """
         query = 'select id, title from flickr.photos.interestingness(%s)' % num
         results = self.yql.execute(query)
-        for row in results.rows:
+        
+        rows = results.rows
+        if num == 1: rows = [results.rows]
+        
+        for row in rows:
             yield (row.get('id'), row.get('title'))
 
     def get_exif(self, photo_id):
