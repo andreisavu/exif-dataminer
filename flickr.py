@@ -34,6 +34,26 @@ class Flickr(object):
             for exif in results.rows['exif']:
                 yield (exif['tag'], exif['label'], exif['raw'])
 
+    def get_photo_info(self, photo_id):
+        """ Get small amount of info
+
+        Info Type: Owner realname, username and photo post date
+        Params: flickr photo ID
+        Returns: dict
+        """
+        query = 'select owner.username, owner.realname, dates.posted, ' \
+            'dates.taken from flickr.photos.info where photo_id=@id'
+        results = self.yql.execute(query, {'id': photo_id})
+        if results.rows != []:
+            return {
+            'realname' : results.rows['owner']['realname'],
+            'username' : results.rows['owner']['username'],
+            'posted' : results.rows['dates']['posted'],
+            'taken' : results.rows['dates']['taken']
+            }
+        else:
+            return None
+
     def get_photo_urls(self, photo_id):
         """ Fetch flick photo urls
 
