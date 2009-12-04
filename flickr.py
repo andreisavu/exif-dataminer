@@ -7,6 +7,8 @@ All the calls are public and require no authentication.
 
 import yql
 
+from datetime import datetime
+
 class Flickr(object):
     def __init__(self):
         self.yql = yql.Public()
@@ -59,7 +61,7 @@ class Flickr(object):
         results = self.yql.execute(query, {'id': photo_id})
         if results.rows != []:
             for exif in results.rows['exif']:
-                yield (exif['tag'], exif['label'], exif['raw'])
+                yield [exif['tag'], exif['label'], exif['raw']]
 
     def get_photo_info(self, photo_id):
         """ Get small amount of info
@@ -75,8 +77,7 @@ class Flickr(object):
             return {
             'realname' : results.rows['owner']['realname'],
             'username' : results.rows['owner']['username'],
-            'posted' : results.rows['dates']['posted'],
-            'taken' : results.rows['dates']['taken']
+            'posted' : datetime.fromtimestamp(int(results.rows['dates']['posted']))
             }
         else:
             return None

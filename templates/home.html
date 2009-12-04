@@ -1,3 +1,13 @@
+$def with (photos)
 
-Hello world!
+Latest 20 photos by Flickr post time:<br /><br />
+
+$for photo in photos:
+    <div class="photo left">
+    <a href="/photo/$photo['id']">
+        <img src="$photo['urls']['Thumbnail']" />
+    </a>
+    </div>
+$if not photos:
+    No photos available. Use the command line tools to fetch some.
 

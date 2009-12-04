@@ -2,9 +2,12 @@
 
 import sys
 import logging
+
 from optparse import OptionParser
+from pymongo.connection import Connection
 
 import flickr
+import settings
 
 try:
     from mongolog.handlers import MongoHandler
@@ -42,7 +45,7 @@ def main():
         return 2
 
     if results is not None:
-        show_photos(f, results)
+        store_photos(f, results, log)
     else:
         log.info('No photos found.')
 
@@ -62,10 +65,27 @@ def setup_logging():
     log.addHandler(MongoHandler.to(db='logging', collection='tools', host=host))
     return log       
 
-def show_photos(f, results):
+def store_photos(f, results, log):
+    conn = Connection(settings.MONGO['host'], settings.MONGO['port'])
+    collection = conn[settings.MONGO['db']][settings.MONGO['collection']]
+
     for id, title in results:
-        print id, ': ', title
-        print f.get_photo_urls(id)['Medium']
+        if collection.find({'id':id}).count():
+            log.info('Photo with ID:%s is already stored.' % id)
+            continue
+
+        photo_data = {
+            'id' : id,
+            'title' : title, 
+            'urls' : f.get_photo_urls(id),
+            'exif' : list(f.get_exif(id))
+        }
+        info = f.get_photo_info(id)
+        for k,v in info.items():
+            photo_data[k] = v
+
+        log.info("Saving photo: ID:%s Title:%s Url:%s" %  (id, title, photo_data['urls']['Medium']))
+        collection.save(photo_data)
 
 def parse_args():
     """ Parse command-line arguments """

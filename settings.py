@@ -1,7 +1,7 @@
 
 MONGO = {
     'host' : 'localhost',
-    'db' : 'exif',
+    'db' : 'webapp',
     'collection' : 'photos',
     'port' : None
 }

@@ -11,3 +11,20 @@
     clear: both;
 }
 
+.photo img {
+    margin: 2px;
+    padding: 2px;
+    border: 1px solid grey;
+}
+
+.photo {
+    width: 150px;
+    height: 150px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+a img {
+    border: none;
+}
+

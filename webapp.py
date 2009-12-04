@@ -17,6 +17,7 @@ urls = (
 app = web.application(urls, globals())
 render = web.template.render('templates/', base='base')
 conn = Connection(settings.MONGO['host'], settings.MONGO['port'])
+collection = conn[settings.MONGO['db']][settings.MONGO['collection']]
 
 class home:
     """ Home page
@@ -24,7 +25,8 @@ class home:
     A basic dasboard for global view.
     """ 
     def GET(self):
-        return render.home()
+        photos = collection.find().sort("posted", DESCENDING).limit(20)
+        return render.home(photos)
 
 class logs:
     """ Centralized logging basic view interface 
