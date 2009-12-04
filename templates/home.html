@@ -4,7 +4,7 @@ Latest 20 photos by Flickr post time:<br /><br />
 
 $for photo in photos:
     <div class="photo left">
-    <a href="/photo/$photo['id']">
+    <a href="/photo/$photo['id']" title="$photo['title']">
         <img src="$photo['urls']['Thumbnail']" />
     </a>
     </div>

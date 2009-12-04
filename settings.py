@@ -2,7 +2,8 @@
 MONGO = {
     'host' : 'localhost',
     'db' : 'webapp',
-    'collection' : 'photos',
     'port' : None
 }
+
+PHOTOS_PER_PAGE = 20
 
