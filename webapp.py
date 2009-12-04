@@ -10,7 +10,7 @@ from pymongo import ASCENDING, DESCENDING
 import settings
 
 urls = (
-    '/', 'home',
+    '/([\d]*)', 'home',
     '/photo/(.+?)', 'photo',
     '/logs/(.+?)/(.+?)/(.*?)', 'logs'
 )
@@ -26,9 +26,18 @@ class home:
 
     A basic dasboard for global view.
     """ 
-    def GET(self):
-        photos = db['photos'].find().sort("posted", DESCENDING).limit(settings.PHOTOS_PER_PAGE)
-        return render.home(list(photos))
+    def GET(self, offset):
+        if offset == '':offset = 0
+        offset = int(offset)
+
+        all_photos = db['photos'].find().sort("posted", DESCENDING)
+        photos = all_photos.skip(offset).limit(settings.PHOTOS_PER_PAGE)
+
+        all_count = all_photos.count()
+        if all_count <= (offset + settings.PHOTOS_PER_PAGE):
+            offset = None
+
+        return render.home(list(photos), offset)
 
 class photo:
     """ Display photo
