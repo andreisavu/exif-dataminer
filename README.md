@@ -9,5 +9,5 @@ Moto: _"A picture is more than a thousand words ..."_
 Screenshots
 -----------
 
-Comming soon.
+Check the [Downloads](http://github.com/andreisavu/exif-dataminer/downloads) section. 
 
