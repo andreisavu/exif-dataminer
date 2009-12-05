@@ -35,7 +35,8 @@ class home:
 
         stats = {
             'total_number': db['photos'].count(),
-            'exif_available' : db['photos'].find({'exif': {'$ne':[]}}).count()
+            'exif_available' : db['photos'].find({'exif': {'$ne':[]}}).count(),
+            'exif_tags' : db['exif_tags'].count()
         }
 
         return render.home(random_photo, stats) 

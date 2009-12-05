@@ -89,7 +89,18 @@ def store_photos(f, results, log):
             log.info("Saving photo: ID:%s Title:%s Url:%s" %  (id, title, photo_data['urls']['Medium']))
         else:
             log.info("Saving photo: ID:%s Title:%s" % (id, title))
+
         collection.save(photo_data)
+        update_exif_tags(conn, photo_data['exif'], log)
+
+def update_exif_tags(conn, exif, log):
+    log.info('Fetching exif tags from current photo.')
+    collection = conn[settings.MONGO['db']]['exif_tags']
+    for (tag, label, value) in exif:
+        if collection.find({'tag':tag}).count() == 0:
+            log.info('Registering tag: %s with label: %s' % (tag, label))
+            collection.save({'tag':tag, 'label': label})
+        
 
 def parse_args():
     """ Parse command-line arguments """
