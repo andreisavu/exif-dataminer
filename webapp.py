@@ -73,7 +73,7 @@ class browse:
 class exif_tags:
     """ List all available exif tags """
     def GET(self):
-        tags = db['exif_tags'].find()
+        tags = db['exif_tags'].find().sort('tag', ASCENDING)
         return render.exif_tags(list(tags))
 
 class exif_tag_info:
