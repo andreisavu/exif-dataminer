@@ -44,9 +44,11 @@ class browse:
 
         all_count = all_photos.count()
         if all_count <= (offset + settings.PHOTOS_PER_PAGE):
-            offset = None
+            has_next = False
+        else:
+            has_next = True
 
-        return render.browse(list(photos), offset)
+        return render.browse(list(photos), offset, has_next)
 
 class photo:
     """ Display photo

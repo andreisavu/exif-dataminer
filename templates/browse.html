@@ -1,4 +1,4 @@
-$def with (photos, offset)
+$def with (photos, offset, has_next)
 
 $for photo in photos:
     $if 'Thumbnail' in photo['urls']:
@@ -14,7 +14,9 @@ $else:
     $if offset is not None:
         <div class="clear"></div>
         $if offset != 0:
-            <a href="/browse/${offset-20}">Previous page</a> | 
-        <a href="/browse/${offset+20}">Next page</a>
+            <a href="/browse/${offset-20}">Previous page</a> 
+            $if has_next:| 
+        $if has_next:
+            <a href="/browse/${offset+20}">Next page</a>
 
 
