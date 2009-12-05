@@ -74,10 +74,19 @@ $def with (tag, value, ts)
 <h3>Raw data sample (max 100 values)</h3>
 <table>
 <tr><th>Date</th><th>Count</th></tr>
+$code:
+    last_value = 0
 $for t, v in ts[:100]:
     <tr>
         <td>$t</td>
-        <td>$v</td>
+        <td>
+        $code:
+            gradient = v - last_value
+            if gradient > 0:
+                gradient = '<span style="color: green">+%d</span>' % gradient
+            last_value = v
+        $v ($:gradient)
+        </td>
     </tr>
 </table>
     
