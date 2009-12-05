@@ -75,8 +75,10 @@ class exif_tag_info:
     """ Generate some online statistics for a given exif tag """
     def GET(self, tag):
         info = {}
-        distinct_values = self.get_distinct_values(tag, limit=1000)
+
+        distinct_values = self.get_distinct_values(tag, limit=1000)    
         l = len(distinct_values)
+
         columns = self.format_as_columns(distinct_values, l/4 + 5)
         return render.exif_tag_info(tag, columns, l, info, quote)
 
@@ -92,7 +94,7 @@ class exif_tag_info:
         dis = set()
         for p in db['photos'].find():
             for tag, label, value in p['exif']:
-                if tag == _tag:
+                if tag == _tag and value is not None:
                     dis.add(value)
                     if len(dis) == limit:
                         return dis
