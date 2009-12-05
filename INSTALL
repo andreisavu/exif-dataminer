@@ -27,4 +27,14 @@ Setup capped collections for logging:
     > db.createCollection('webapp', {capped:true, max:100000})
     {"ok" : 1}
 
+Fetch some interesting photos from flickr:
+
+    $ ./flickr_fetch.py -i -n 20
+
+Start the web application:
+
+    $ python webapp.py
+
+    ... and goto http://localhost:8080
+
 
