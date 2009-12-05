@@ -1,20 +1,4 @@
-$def with (photos, offset)
+$def with ()
 
-$for photo in photos:
-    $if 'Thumbnail' in photo['urls']:
-        <div class="photo left">
-        <a href="/photo/$photo['id']" title="$photo['title']">
-            <img src="$photo['urls']['Thumbnail']" />
-        </a>
-        </div>
-
-$if not photos:
-    No photos available. Use the command line tools to fetch some.
-$else:
-    $if offset is not None:
-        <div class="clear"></div>
-        $if offset != 0:
-            <a href="/${offset-20}">Previous page</a> | 
-        <a href="/${offset+20}">Next page</a>
-
+Welcome!
 

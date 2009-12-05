@@ -10,7 +10,8 @@ from pymongo import ASCENDING, DESCENDING
 import settings
 
 urls = (
-    '/([\d]*)', 'home',
+    '/', 'home',
+    '/browse/([\d]*)', 'browse',
     '/photo/(.+?)', 'photo',
     '/logs/(.+?)/(.+?)/(.*?)', 'logs'
 )
@@ -22,9 +23,17 @@ conn = Connection(settings.MONGO['host'], settings.MONGO['port'])
 db = conn[settings.MONGO['db']]
 
 class home:
-    """ Home page
+    """ Dashboard
 
-    A basic dasboard for global view.
+    List some aggregated statistics and clusters
+    """
+    def GET(self):
+        return render.home()        
+
+class browse:
+    """ List all photos
+
+    List all photos in backwards chronological order
     """ 
     def GET(self, offset):
         if offset == '':offset = 0
@@ -37,7 +46,7 @@ class home:
         if all_count <= (offset + settings.PHOTOS_PER_PAGE):
             offset = None
 
-        return render.home(list(photos), offset)
+        return render.browse(list(photos), offset)
 
 class photo:
     """ Display photo
