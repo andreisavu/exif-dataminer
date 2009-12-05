@@ -6,6 +6,7 @@ import web
 
 from pymongo.connection import Connection
 from pymongo import ASCENDING, DESCENDING
+from urllib import quote, unquote
 
 import settings
 
@@ -14,6 +15,8 @@ urls = (
     '/browse/([\d]*)', 'browse',
     '/photo/(.+?)', 'photo',
     '/exif/tags/', 'exif_tags',
+    '/exif/tag/(.+)', 'exif_tag_info',
+    '/exif/histogram/(.+?)/(.+?)', 'exif_histogram',
     '/logs/(.+?)/(.+?)/(.*?)', 'logs'
 )
 
@@ -68,6 +71,42 @@ class exif_tags:
         tags = db['exif_tags'].find()
         return render.exif_tags(list(tags))
 
+class exif_tag_info:
+    """ Generate some online statistics for a given exif tag """
+    def GET(self, tag):
+        info = {}
+        distinct_values = self.get_distinct_values(tag, limit=1000)
+        l = len(distinct_values)
+        columns = self.format_as_columns(distinct_values, l/4 + 5)
+        return render.exif_tag_info(tag, columns, l, info, quote)
+
+    def format_as_columns(self, values, per_column):
+        offset = 0
+        columns = []
+        while offset < len(values):
+            columns.append(values[offset:offset + per_column])
+            offset += per_column - 1
+        return columns
+
+    def get_distinct_values(self, _tag, limit=100):
+        dis = set()
+        for p in db['photos'].find():
+            for tag, label, value in p['exif']:
+                if tag == _tag:
+                    dis.add(value)
+                    if len(dis) == limit:
+                        return dis
+        return sorted(list(dis))
+
+class exif_histogram:
+    """ Display a sexy histogram for this tag and value
+
+    Not very efficient but good enough for a prototype.
+    """
+    def GET(self, tag, value):
+        value = unquote(value)
+        return render.exif_histogram(tag, value)
+        
 class photo:
     """ Display photo
 

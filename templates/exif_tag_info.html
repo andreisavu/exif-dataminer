@@ -1,0 +1,22 @@
+$def with (tag, columns, found, info, escape_fn)
+<h2>info / $tag</h2>
+
+<h4>Pseudo-random sample: 
+$found values (max 1000): 
+click any to see a histogram</h4>
+
+
+$if columns:
+    <table>
+    <tr>
+    $for col in columns:
+        <td valign="top" style="padding: 3px;">
+        $for v in col:
+            <a href="/exif/histogram/$:{escape_fn(tag)}/$:{escape_fn(v)}">
+            $v</a><br />
+        </td>
+    </tr>
+    </table>
+$else:
+    No values found.
+

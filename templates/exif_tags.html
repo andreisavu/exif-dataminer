@@ -4,7 +4,7 @@ $if tags:
     <table><tr><th>Tag</th><th>Label</th></td></tr>
     $for t in tags:
         <tr>
-        <td>$t['tag']</td>
+        <td><a href="/exif/tag/$t['tag']">$t['tag']</a></td>
         <td>$t['label']</td>
         </tr>
     </table>
