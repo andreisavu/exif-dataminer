@@ -30,7 +30,7 @@ $def with (tag, value, ts)
                   formatter: function() {
                      return '<b>'+ (this.point.name || this.series.name) +'</b><br/>'+
                         Highcharts.dateFormat('%A %B %e %Y', this.x) + ':<br/>'+
-                        Highcharts.numberFormat(this.y, 2) + ' photos.';
+                        this.y + ' photos.';
                   }
                },
                legend: {
