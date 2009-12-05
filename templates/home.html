@@ -1,4 +1,17 @@
-$def with ()
+$def with (photo, stats)
 
-Welcome!
+<table height="300">
+<tr><td valign="top">
+    <a href="/photo/$photo['id']">
+        <img width="400" src="$photo['urls']['Medium']" />\
+    </a>
+</td><td valign="top" style="padding-left: 30px;">
+    <h2>Statistics</h2>
+
+    <ol>
+    <li>Total number of photos: $stats['total_number']</li>
+    <li>Photos with exif data: $stats['exif_available']</li>
+    </ol>
+</td></tr>
+</table>
 

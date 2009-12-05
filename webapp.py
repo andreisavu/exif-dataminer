@@ -28,7 +28,17 @@ class home:
     List some aggregated statistics and clusters
     """
     def GET(self):
-        return render.home()        
+        from random import randint, seed
+
+        l = db['photos'].count()
+        random_photo = db['photos'].find()[randint(0,l-1)]
+
+        stats = {
+            'total_number': db['photos'].count(),
+            'exif_available' : db['photos'].find({'exif': {'$ne':[]}}).count()
+        }
+
+        return render.home(random_photo, stats) 
 
 class browse:
     """ List all photos
