@@ -13,6 +13,7 @@ urls = (
     '/', 'home',
     '/browse/([\d]*)', 'browse',
     '/photo/(.+?)', 'photo',
+    '/exif/tags/', 'exif_tags',
     '/logs/(.+?)/(.+?)/(.*?)', 'logs'
 )
 
@@ -60,6 +61,12 @@ class browse:
             has_next = True
 
         return render.browse(list(photos), offset, has_next)
+
+class exif_tags:
+    """ List all available exif tags """
+    def GET(self):
+        tags = db['exif_tags'].find()
+        return render.exif_tags(list(tags))
 
 class photo:
     """ Display photo

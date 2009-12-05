@@ -1,0 +1,12 @@
+$def with (tags)
+
+$if tags:
+    <table><tr><th>Tag</th><th>Label</th></td></tr>
+    $for t in tags:
+        <tr>
+        <td>$t['tag']</td>
+        <td>$t['label']</td>
+        </tr>
+    </table>
+$else:
+    No exif tags available.
