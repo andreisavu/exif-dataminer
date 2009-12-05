@@ -25,10 +25,15 @@ $if photo['exif']:
     </thead>
     <tbody>
     $for (tag, label, value) in photo['exif']:
-        <tr>
-            <td>$label</td>
-            <td>$limit(value)</td>
-        </tr>
+        $if value is not None:
+            <tr>
+                <td><a href="/exif/tag/$tag">$label</a></td>
+                <td>
+                $if can_quote(value):
+                    <a href="/exif/histogram/$tag/${quote(value)}">$limit(value)</a></td>
+                $else:
+                    $limit(value)
+            </tr>
     </tbody>
     </table>
 $else:

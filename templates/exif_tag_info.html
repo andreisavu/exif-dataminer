@@ -1,10 +1,7 @@
-$def with (tag, columns, found, info, escape_fn)
+$def with (tag, columns, found, info)
 <h2>info / $tag</h2>
 
-<h4>Pseudo-random sample: 
-$found values (max 1000): 
-click any to see a histogram</h4>
-
+<h4>Pseudo-random sample:  $found values (max 1000): click any to see a histogram</h4>
 
 $if columns:
     <table>
@@ -12,8 +9,11 @@ $if columns:
     $for col in columns:
         <td valign="top" style="padding: 3px;">
         $for v in col:
-            <a href="/exif/histogram/$:{escape_fn(tag)}/$:{escape_fn(v)}">
-            $v</a><br />
+            $if can_quote(v):
+                <a href="/exif/histogram/$tag/${quote(v)}">$v</a>
+            $else:
+                $v
+            <br />
         </td>
     </tr>
     </table>

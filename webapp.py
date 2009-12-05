@@ -10,6 +10,8 @@ from urllib import quote, unquote
 
 import settings
 
+from utils import can_quote
+
 urls = (
     '/', 'home',
     '/browse/([\d]*)', 'browse',
@@ -21,7 +23,7 @@ urls = (
 )
 
 app = web.application(urls, globals())
-render = web.template.render('templates/', base='base')
+render = web.template.render('templates/', base='base', globals={'quote':quote,  'can_quote':can_quote})
 
 conn = Connection(settings.MONGO['host'], settings.MONGO['port'])
 db = conn[settings.MONGO['db']]
@@ -80,7 +82,7 @@ class exif_tag_info:
         l = len(distinct_values)
 
         columns = self.format_as_columns(distinct_values, l/4 + 5)
-        return render.exif_tag_info(tag, columns, l, info, quote)
+        return render.exif_tag_info(tag, columns, l, info)
 
     def format_as_columns(self, values, per_column):
         offset = 0
