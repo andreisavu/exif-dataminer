@@ -1,11 +1,12 @@
 $def with (photos, offset)
 
 $for photo in photos:
-    <div class="photo left">
-    <a href="/photo/$photo['id']" title="$photo['title']">
-        <img src="$photo['urls']['Thumbnail']" />
-    </a>
-    </div>
+    $if 'Thumbnail' in photo['urls']:
+        <div class="photo left">
+        <a href="/photo/$photo['id']" title="$photo['title']">
+            <img src="$photo['urls']['Thumbnail']" />
+        </a>
+        </div>
 
 $if not photos:
     No photos available. Use the command line tools to fetch some.

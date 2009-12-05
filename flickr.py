@@ -59,7 +59,7 @@ class Flickr(object):
         """
         query = 'select * from flickr.photos.exif where photo_id=@id'
         results = self.yql.execute(query, {'id': photo_id})
-        if results.rows != []:
+        if results.rows != [] and 'exif' in results.rows:
             for exif in results.rows['exif']:
                 yield [exif['tag'], exif['label'], exif['raw']]
 

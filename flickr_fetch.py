@@ -67,7 +67,7 @@ def setup_logging():
 
 def store_photos(f, results, log):
     conn = Connection(settings.MONGO['host'], settings.MONGO['port'])
-    collection = conn[settings.MONGO['db']][settings.MONGO['collection']]
+    collection = conn[settings.MONGO['db']]['photos']
 
     for id, title in results:
         if collection.find({'id':id}).count():
@@ -81,10 +81,14 @@ def store_photos(f, results, log):
             'exif' : list(f.get_exif(id))
         }
         info = f.get_photo_info(id)
-        for k,v in info.items():
-            photo_data[k] = v
+        if info is not None:
+            for k,v in info.items():
+                photo_data[k] = v
 
-        log.info("Saving photo: ID:%s Title:%s Url:%s" %  (id, title, photo_data['urls']['Medium']))
+        if 'Medium' in photo_data['urls']:
+            log.info("Saving photo: ID:%s Title:%s Url:%s" %  (id, title, photo_data['urls']['Medium']))
+        else:
+            log.info("Saving photo: ID:%s Title:%s" % (id, title))
         collection.save(photo_data)
 
 def parse_args():
