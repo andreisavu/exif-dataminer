@@ -107,9 +107,19 @@ class exif_histogram:
 
     Not very efficient but good enough for a prototype.
     """
-    def GET(self, tag, value):
-        value = unquote(value)
-        return render.exif_histogram(tag, value)
+    def GET(self, _tag, _value):
+        _value = unquote(_value)
+
+        ts = {}
+        total = 0
+        for p in db['photos'].find({'exif':{'$ne':[]}}).sort('posted', ASCENDING):
+            for tag, label, value in p['exif']:
+                if tag == _tag and value == _value:
+                    posted = p['posted'].replace(hour=0, minute=0, second=0, microsecond=0)
+                    total += 1
+                    ts[posted] = total
+
+        return render.exif_histogram(_tag, _value, ts.items())
         
 class photo:
     """ Display photo

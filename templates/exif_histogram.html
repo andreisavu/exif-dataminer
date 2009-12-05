@@ -1,4 +1,84 @@
-$def with (tag, value)
+$def with (tag, value, ts)
+
+        <!-- 2. Add the JavaScript to initialize the chart on document ready --> 
+        <script type="text/javascript"> 
+        $$(document).ready(function() {
+                var chart = new Highcharts.Chart({
+               chart: {
+                  renderTo: 'container',
+                  zoomType: 'x'
+               },
+                    title: {
+                  text: '$tag / $value'
+               },
+                    subtitle: {
+                  text: 'Click and drag in the plot area to zoom in'
+               },
+               xAxis: {
+                  type: 'datetime',
+                  maxZoom: 3 * 24 * 3600000, 
+                  title: {
+                     text: "Time"
+                  }
+               },
+               yAxis: {
+                  title: {
+                     text: 'Number of photos'
+                  }
+               },
+               tooltip: {
+                  formatter: function() {
+                     return '<b>'+ (this.point.name || this.series.name) +'</b><br/>'+
+                        Highcharts.dateFormat('%A %B %e %Y', this.x) + ':<br/>'+
+                        Highcharts.numberFormat(this.y, 2) + ' photos.';
+                  }
+               },
+               legend: {
+                  enabled: false
+               },
+               plotOptions: {
+                  line: {
+                     marker: {
+                        enabled: false
+                     },
+                     shadow: false,
+                     states: {
+                        hover: {
+                           marker: {
+                              enabled: false
+                           },
+                           lineWidth: 2
+                        }
+                     }
+                  }
+               },
+            
+               series: [{
+                  type: 'line',
+                  name: 'Number of photos',
+                  data: [
+                    $for t, v in ts:
+                        [Date.UTC($t.year, $t.month, $t.day), $v],
+                 ]
+               }]
+            });
+            
+            
+        });
+        </script>
 
 <h3>histogram / $tag / $value</h3>
+
+<div id="container" style="width: 800px; height: 400px"></div>
+
+<h3>Raw data sample (max 100 values)</h3>
+<table>
+<tr><th>Date</th><th>Count</th></tr>
+$for t, v in ts[:100]:
+    <tr>
+        <td>$t</td>
+        <td>$v</td>
+    </tr>
+</table>
+    
 
