@@ -13,13 +13,15 @@ class Flickr(object):
     def __init__(self):
         self.yql = yql.Public()
 
-    def interesting_photos(self, num=5):
+    def interesting_photos(self, num=5, date=None):
         """ Fetch most interesting photos from flickr
 
         Params: num - result size
         Yields tuples (id, title)
         """
         query = 'select id, title from flickr.photos.interestingness(%s)' % num
+        if date is not None:
+            query = "%s where date='%s'" % (query, date)
         results = self.yql.execute(query)
         return self._fetch_results(results, num)
 

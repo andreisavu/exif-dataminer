@@ -36,7 +36,7 @@ def main():
         results = f.search_photos(opt.query, num)
     elif opt.interesting:
         log.info('Loading interesting pictures from flickr.')
-        results = f.interesting_photos(num)
+        results = f.interesting_photos(num, opt.date)
     elif opt.recent:
         log.info('Loading recent photos from flickr.')
         results = f.recent_photos(num)
@@ -117,6 +117,9 @@ def parse_args():
 
     parser.add_option('-n', '--num', dest='num',
         help='result SIZE', metavar='SIZE')
+
+    parser.add_option('-d', '--date', dest='date',
+        help='DATE in format YYYY-MM-DD', metavar='DATE')
 
     return parser.parse_args()
 
