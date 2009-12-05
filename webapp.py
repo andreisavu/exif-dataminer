@@ -37,7 +37,10 @@ class home:
         from random import randint, seed
 
         l = db['photos'].count()
-        random_photo = db['photos'].find()[randint(0,l-1)]
+        if l:
+            random_photo = db['photos'].find()[randint(0,l-1)]
+        else:
+            random_photo = None
 
         stats = {
             'total_number': db['photos'].count(),

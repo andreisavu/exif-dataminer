@@ -2,6 +2,7 @@ $def with (photo, stats)
 
 <table height="300">
 <tr><td valign="top">
+$if photo:
     <a href="/photo/$photo['id']">
         <img width="400" src="$photo['urls']['Medium']" />\
     </a>
