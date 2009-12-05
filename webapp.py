@@ -122,7 +122,7 @@ class exif_histogram:
                     total += 1
                     ts[posted] = total
 
-        return render.exif_histogram(_tag, _value, ts.items())
+        return render.exif_histogram(_tag, _value, sorted(ts.items()))
         
 class photo:
     """ Display photo
