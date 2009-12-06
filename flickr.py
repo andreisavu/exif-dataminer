@@ -10,6 +10,10 @@ import yql
 from datetime import datetime
 
 class Flickr(object):
+    """ Flickr API Client class based on Yahoo! Query Language
+
+    No API key is needed because all the calls are public. 
+    """
     def __init__(self):
         self.yql = yql.Public()
 
@@ -98,4 +102,27 @@ class Flickr(object):
             ret[row['label']] = row['source']
         return ret
 
+
+if __name__ == '__main__':
+    from itertools import izip, count
+    print 'Flickr Client demo application. Showing one interesting photos posted today ...\n'
+
+    f = Flickr()
+    for id, title in f.interesting_photos(num=1):
+        print 'ID:%s Title: %s' % (id, title)
+
+        urls = f.get_photo_urls(id)
+        if 'Medium' in urls:
+            print 'Url: %s' % urls['Medium']
+
+        print "\nExif data:"
+        for index, (tag, label, raw) in izip(count(), f.get_exif(id)):
+            print tag, label, raw
+            if index == 5: 
+                print "... and many more\n\n"
+                break
+        else:
+            print "Info not available!\n\n"
+
+    print 'Done.'
 
