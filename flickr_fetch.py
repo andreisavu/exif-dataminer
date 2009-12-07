@@ -16,8 +16,7 @@ except ImportError:
     sys.exit(1)
 
 def main():
-    log = setup_logging()
-    log.setLevel(logging.DEBUG)
+    log = setup_logging(logging.DEBUG)
     log.info('Starting Flickr photo fetch tool');
 
     opt, args = parse_args()
@@ -49,7 +48,7 @@ def main():
     else:
         log.info('No photos found.')
 
-def setup_logging():
+def setup_logging(level=logging.DEBUG):
     """ Setup centralized logging
 
     All log messages will end-up in capped mongo collection
@@ -59,11 +58,14 @@ def setup_logging():
     try:
         import settings
         host = settings.MONGO['host']
+
     except ImportError:
         print >>sys.stderr, 'Settings file is not available. Using localhost.'
 
     log.addHandler(MongoHandler.to(db='logging', collection='tools', host=host))
-    return log       
+    log.setLevel(level)
+
+    return log 
 
 def store_photos(f, results, log):
     conn = Connection(settings.MONGO['host'], settings.MONGO['port'])
