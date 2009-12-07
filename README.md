@@ -4,10 +4,10 @@ Exif Dataminer
 
 Moto: _"A picture is more than a thousand words ..."_
 
-Prototype application: find patterns in exif data collected from flickr using yql.
+A tool for finding patterns in Exif data collected from Flickr using YQL.
 
-What makes this prototype interesting?
---------------------------------------
+What makes this application interesting?
+----------------------------------------
 
 * the [YQL](http://developer.yahoo.com/yql/) based Flickr Client class 
 * centralized logging using [MongoLog](http://github.com/andreisavu/mongodb-log)
