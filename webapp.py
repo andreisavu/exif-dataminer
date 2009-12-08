@@ -38,7 +38,8 @@ class home:
 
         l = db['photos'].count()
         if l:
-            random_photo = db['photos'].find()[randint(0,l-1)]
+            photos = db['photos'].find().skip(randint(0,l-1)).limit(1)
+            random_photo = list(photos)[0]
         else:
             random_photo = None
 
