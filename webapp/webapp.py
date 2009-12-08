@@ -69,13 +69,14 @@ class browse:
         else:
             has_next = True
 
-        return render.browse(list(photos), offset, has_next)
+        return render.browse(photos, offset, has_next)
 
 class exif_tags:
     """ List all available exif tags """
     def GET(self):
-        tags = db['exif_tags'].find().sort('tag', ASCENDING)
-        return render.exif_tags(list(tags))
+        half = db['photos'].count() / 2
+        tags = db['exif_tags'].find({'count':{'$gte': half }}).sort('count', DESCENDING)
+        return render.exif_tags(tags)
 
 class exif_tag_info:
     """ Generate some online statistics for a given exif tag """
@@ -104,7 +105,7 @@ class exif_tag_info:
                     dis.add(value)
                     if len(dis) == limit:
                         return dis
-        return sorted(list(dis))
+        return sorted(dis)
 
 class exif_histogram:
     """ Display a sexy histogram for this tag and value
@@ -146,7 +147,7 @@ class logs:
         if level and level in allowed_levels:
             args = {'level':level}
         logs = conn[db][collection].find(args, limit=100).sort('$natural', DESCENDING)
-        return render.logs(list(logs), '/logs/%s/%s' % (db, collection))
+        return render.logs(logs, '/logs/%s/%s' % (db, collection))
 
 if __name__ == "__main__":
     app.run()
