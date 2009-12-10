@@ -1,4 +1,4 @@
-$def with (tags)
+$def with (tags, photo_count)
 
 <h3>Quick tags</h3>
 
@@ -10,11 +10,11 @@ $def with (tags)
 <h3>All available tags</h3>
 
 $if tags:
-    <table><tr><th>Tag</th><th>Label</th></td></tr>
+    <table><tr><th>Tag</th><th>Procent</th></td></tr>
     $for t in tags:
         <tr>
         <td><a href="/exif/tag/$t['tag']">$t['tag']</a></td>
-        <td>$t['label']</td>
+        <td>${int(t['count'] / float(photo_count) * 100)}%</td>
         </tr>
     </table>
 $else:

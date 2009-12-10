@@ -11,7 +11,7 @@ class ExifReport:
 
     def reduce(self, key, values):
         tag, label = key
-        return {
+        yield {
             'tag' : tag, 
             'label' : label, 
             'count' : len(values)
@@ -19,13 +19,11 @@ class ExifReport:
 
 def main():
     
-    exif_report = ExifReport()
     mapper.db['exif_tags'].remove({})
     mapper.run(
         mapper.db['photos'].find({'exif':{'$ne':[]}}),
         mapper.db['exif_tags'],
-        exif_report.map,
-        exif_report.reduce)
+        ExifReport())
 
 
 if __name__ == '__main__':

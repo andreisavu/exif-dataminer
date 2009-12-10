@@ -74,9 +74,9 @@ class browse:
 class exif_tags:
     """ List all available exif tags """
     def GET(self):
-        half = db['photos'].count() / 2
-        tags = db['exif_tags'].find({'count':{'$gte': half }}).sort('count', DESCENDING)
-        return render.exif_tags(tags)
+        photo_count = db['photos'].count()
+        tags = db['exif_tags'].find({'count':{'$gte': photo_count * 2 / 3.0 }}).sort('count', DESCENDING)
+        return render.exif_tags(tags, photo_count)
 
 class exif_tag_info:
     """ Generate some online statistics for a given exif tag """
