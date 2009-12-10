@@ -28,8 +28,7 @@ $def with (tag, value, ts)
                },
                tooltip: {
                   formatter: function() {
-                     return '<b>'+ (this.point.name || this.series.name) +'</b><br/>'+
-                        Highcharts.dateFormat('%A %B %e %Y', this.x) + ':<br/>'+
+                     return Highcharts.dateFormat('%A %B %e %Y', this.x) + ':<br/>'+
                         this.y + ' photos.';
                   }
                },
@@ -58,7 +57,7 @@ $def with (tag, value, ts)
                   name: 'Number of photos',
                   data: [
                     $for t, v in ts:
-                        [Date.UTC($t.year, $t.month, $t.day), $v],
+                        [Date.UTC($t.year, ${t.month-1}, $t.day), $v],
                  ]
                }]
             });
