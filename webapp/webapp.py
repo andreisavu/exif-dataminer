@@ -107,7 +107,7 @@ class exif_histogram:
         total = 0
         for p in db['photos'].find({'exif':{'$ne':[]}}).sort('posted', ASCENDING):
             for tag, label, value in p['exif']:
-                if tag == _tag and value == _value:
+                if tag == _tag and value == _value and 'posted' in p:
                     posted = p['posted'].replace(hour=0, minute=0, second=0, microsecond=0)
                     total += 1
                     ts[posted] = total
