@@ -81,13 +81,11 @@ class exif_tags:
 class exif_tag_info:
     """ Generate some online statistics for a given exif tag """
     def GET(self, tag):
-        info = {}
+        values = db['exif_tags'].find_one({'tag':tag})['values']
+        l = len(values)
 
-        distinct_values = self.get_distinct_values(tag, limit=1000)    
-        l = len(distinct_values)
-
-        columns = self.format_as_columns(distinct_values, l/4 + 5)
-        return render.exif_tag_info(tag, columns, l, info)
+        columns = self.format_as_columns(values, l/4 + 5)
+        return render.exif_tag_info(tag, columns, l)
 
     def format_as_columns(self, values, per_column):
         offset = 0
@@ -96,16 +94,6 @@ class exif_tag_info:
             columns.append(values[offset:offset + per_column])
             offset += per_column - 1
         return columns
-
-    def get_distinct_values(self, _tag, limit=100):
-        dis = set()
-        for p in db['photos'].find():
-            for tag, label, value in p['exif']:
-                if tag == _tag and value is not None:
-                    dis.add(value)
-                    if len(dis) == limit:
-                        return dis
-        return sorted(dis)
 
 class exif_histogram:
     """ Display a sexy histogram for this tag and value
