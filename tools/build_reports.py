@@ -4,7 +4,7 @@ import sys
 
 import mapper
 
-class ExifReport:
+class ExifReport(mapper.Job):
     def map(self, photo):
         for tag, label, _ in photo['exif']:
             yield (tag, label), 1

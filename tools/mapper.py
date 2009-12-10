@@ -5,6 +5,23 @@ from settings import MONGO
 
 db = Connection(MONGO['host'], MONGO['port'])[MONGO['db']]
 
+class Job(object):
+    """ Pseudo map/reduce job interface class """
+
+    def map(self, element):
+        """ This function is called for each element of the collection
+
+        It should yield (key, value) pairs
+        """
+        raise TypeError('Not implemented.')
+
+    def reduce(self, key, values):
+        """ This function will be called with all the values attached to a key 
+
+        It should yield elements that are going to be part of the result collection.
+        """
+        raise TypeError('Not implemented.')
+
 def run(src, out, job):
     """ Run mapreduce job on mongo collection. 
 
